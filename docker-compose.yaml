@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: actix-todo-dev-db
+    ports:
+      - 3306:3306
+    env_file: .env
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: mysqld --explicit_defaults_for_timestamp=1
+
+volumes:
+  mysql_data:
+  media:
+  static:
