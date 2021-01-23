@@ -1,14 +1,16 @@
-
 #[macro_use]
 extern crate log;
 
-use actix_web::{web, App, HttpServer};
-use dotenv::dotenv;
-use std::env;
+use actix_web::{middleware::Logger, App, HttpServer};
 use anyhow::Result;
+use dotenv::dotenv;
 use listenfd::ListenFd;
 use sqlx::MySqlPool;
+use std::env;
 
+mod routes;
+mod models;
+mod handlers;
 
 #[actix_web::main]
 async fn main() -> Result<()> {
@@ -25,10 +27,10 @@ async fn main() -> Result<()> {
 
     let mut server = HttpServer::new(move || {
         // move counter into the closure
-
         App::new()
             .data(db_pool.clone()) // pass database pool to application so we can access it inside handlers
-            // .service(web::scope("/api").configure(other::scoped_config))
+            .wrap(Logger::default())
+            .configure(routes::routes)
     });
 
     server = match listenfd.take_tcp_listener(0)? {
