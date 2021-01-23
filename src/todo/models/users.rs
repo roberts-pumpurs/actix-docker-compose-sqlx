@@ -1,7 +1,6 @@
 use serde::{Deserialize, Serialize};
-use sqlx::mysql::MySqlRow;
 use sqlx::Done;
-use sqlx::{FromRow, Row};
+use sqlx::{FromRow};
 
 use crate::state::AppState;
 

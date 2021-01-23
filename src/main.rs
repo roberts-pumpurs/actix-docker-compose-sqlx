@@ -4,14 +4,14 @@ extern crate log;
 #[macro_use]
 extern crate async_trait;
 
-use actix_web::{App, HttpServer, http, middleware::{Logger, errhandlers::ErrorHandlers}};
+use actix_web::{App, HttpServer, middleware::{Logger}};
 use anyhow::Result;
 use dotenv::dotenv;
 use listenfd::ListenFd;
 use sqlx::MySqlPool;
-use state::{AppState, State};
 use std::env;
 
+mod api;
 mod routes;
 mod todo;
 mod state;
@@ -30,7 +30,7 @@ async fn main() -> Result<()> {
     // Construct the sharable state between workers (Database pool)
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not set in .env file");
     let db_pool = MySqlPool::connect(&database_url).await?;
-    let state = std::sync::Arc::new(State::new(db_pool));
+    let state = std::sync::Arc::new(state::State::new(db_pool));
     let state = state::AppState::new(state);
     // let state = actix_web::web::Data::new(state);
 

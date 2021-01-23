@@ -1,7 +1,5 @@
-use actix_web::{get, web, HttpRequest, HttpResponse, Responder};
-// use super::models::users::IUser;
-
-use crate::{how::Error, state::AppState, todo::models::users::IUser};
+use crate::{api::ApiResult, how::Error, state::AppState, todo::models::users::IUser};
+use actix_web::{web, HttpRequest, Responder};
 
 pub async fn get_users(
     _req: HttpRequest,
@@ -9,5 +7,6 @@ pub async fn get_users(
 ) -> Result<impl Responder, Error> {
     let users = &state.user_query("").await?;
     debug!("users {:#?}", &users);
-    Ok(HttpResponse::Ok().body("Hey there!"))
+    let res = ApiResult::new().with_msg("ok").with_data(users);
+    Ok(res.to_resp())
 }

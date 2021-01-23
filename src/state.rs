@@ -1,5 +1,4 @@
 pub type SqlPool = sqlx::MySqlPool;
-pub type PoolOptions = sqlx::mysql::MySqlPoolOptions;
 
 #[derive(Clone)]
 pub struct State {
