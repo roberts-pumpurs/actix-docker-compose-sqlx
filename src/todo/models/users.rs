@@ -4,7 +4,7 @@ use sqlx::{FromRow};
 
 use crate::state::AppState;
 
-type SqlID = i32;
+type SqlID = u64;
 
 #[derive(FromRow, Serialize, Deserialize, Clone, Debug)]
 pub struct User {
@@ -21,37 +21,52 @@ pub struct Register {
 
 #[async_trait]
 pub trait IUser {
-    async fn user_add(&self, form: &Register) -> sqlx::Result<u64>;
-    async fn user_query(&self, name: &str) -> sqlx::Result<User>;
+    async fn user_add(&self, form: &Register) -> sqlx::Result<SqlID>;
+    async fn user_query(&self, id: SqlID) -> sqlx::Result<User>;
+    async fn user_all(&self) -> sqlx::Result<Vec<User>>;
 }
 
 #[async_trait]
 impl IUser for AppState {
-    async fn user_add(&self, form: &Register) -> sqlx::Result<u64> {
-        sqlx::query!(
+    async fn user_add(&self, form: &Register) -> sqlx::Result<SqlID> {
+        let id = sqlx::query!(
             r#"
         INSERT INTO users (name, email)
-        VALUES (?, ?)
+        VALUES (?, ?);
                 "#,
             form.name,
             form.email,
         )
         .execute(&self.sql)
-        .await
-        .map(|d| d.rows_affected())
+        .await?
+        .last_insert_id();
+        Ok(id)
     }
 
-    async fn user_query(&self, name: &str) -> sqlx::Result<User> {
+    async fn user_query(&self, id: SqlID) -> sqlx::Result<User> {
         sqlx::query_as!(
             User,
             r#"
         SELECT id, name, email
         FROM users
-        where name = ?
+        where id = ?
                 "#,
-            name
+            id
         )
         .fetch_one(&self.sql)
+        .await
+    }
+
+    async fn user_all(&self) -> sqlx::Result<Vec<User>> {
+        sqlx::query_as!(
+            User,
+            r#"
+        SELECT id, name, email
+        FROM users
+        ORDER BY id
+            "#,
+        )
+        .fetch_all(&self.sql)
         .await
     }
 }

@@ -1,9 +1,7 @@
-
 use actix_web::web;
 
-use super::handlers::users::get_users;
+use super::handlers::users::init;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
-    cfg
-        .route("/user", web::get().to(get_users));
+    cfg.service(web::scope("/user").configure(init));
 }
