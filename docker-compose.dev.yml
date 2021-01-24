@@ -11,7 +11,8 @@ services:
     command: mysqld --explicit_defaults_for_timestamp=1
   api:
     container_name: actix-todo-dev-api-dev
-    command: sh -c "cargo watch -i .gitignore -i sqlx-data.json -s './init.sh'"
+    command: bash -c "./init.sh & bash"
+    tty: true
     volumes:
       - ./actix-backend/:/app/
     depends_on:
