@@ -10,8 +10,21 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     command: mysqld --explicit_defaults_for_timestamp=1
-
+  api:
+    build:
+      context: ./actix-backend
+      dockerfile: Dockerfile
+    env_file: .env
+    ports:
+      - 5000:5000
+  nginx:
+    build: ./nginx
+    container_name: actix-todo-dev-nginx
+    ports:
+      - 8080:80
+    restart: always
+    depends_on:
+      - api
+      - db
 volumes:
   mysql_data:
-  media:
-  static:

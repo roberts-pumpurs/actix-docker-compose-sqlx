@@ -35,16 +35,9 @@ impl<T: Serialize> ApiResult<T> {
         self
     }
     pub fn to_resp(&self) -> HttpResponse {
-        let resp = match serde_json::to_string(self) {
-            Ok(json) => HttpResponse::Ok()
-                .content_type("application/json")
-                .status(
-                    StatusCode::from_u16(self.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR),
-                )
-                .body(json),
-            Err(e) => Error::from(e).into(),
-        };
-
-        resp
+        HttpResponse::Ok()
+            .content_type("application/json")
+            .status(StatusCode::from_u16(self.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR))
+            .json(self)
     }
 }
