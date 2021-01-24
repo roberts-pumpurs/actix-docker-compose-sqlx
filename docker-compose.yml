@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  api:
+    env_file: .env
+    build:
+      context: ./actix-backend
+      dockerfile: Dockerfile.dev
+  nginx:
+    build: ./nginx
+    env_file: .env
+    container_name: actix-todo-dev-nginx
+    ports:
+      - 8080:80
+    restart: always
+    depends_on:
+      - api
