@@ -7,4 +7,5 @@ RUN apt-get update -y \
     # Clean up
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
+RUN rustup component add rustfmt
 RUN cargo install sqlx-cli

@@ -96,15 +96,16 @@ dependencies = [
 name = "actix-mysql-sqlx-todo"
 version = "0.1.0"
 dependencies = [
+ "actix-rt",
  "actix-web",
  "anyhow",
  "async-trait",
- "chrono",
  "dotenv",
  "env_logger",
- "listenfd",
+ "futures",
  "log",
  "serde",
+ "serde-aux",
  "serde_json",
  "sqlx",
  "thiserror",
@@ -1134,17 +1135,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7fb9b38af92608140b86b693604b9ffcc5824240a484d1ecd4795bacb2fe88f3"
 
 [[package]]
-name = "listenfd"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "492158e732f2e2de81c592f0a2427e57e12cd3d59877378fe7af624b6bbe0ca1"
-dependencies = [
- "libc",
- "uuid",
- "winapi 0.3.9",
-]
-
-[[package]]
 name = "lock_api"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1735,6 +1725,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6159e3c76cab06f6bc466244d43b35e77e9500cd685da87620addadc2a4c40b1"
 dependencies = [
  "serde_derive",
+]
+
+[[package]]
+name = "serde-aux"
+version = "2.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0162d500b846a7b331e583abaaa9c5c63c5777aa515dda3567c410ba243ce8be"
+dependencies = [
+ "chrono",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -2376,15 +2377,6 @@ dependencies = [
  "idna",
  "matches",
  "percent-encoding",
-]
-
-[[package]]
-name = "uuid"
-version = "0.6.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e1436e58182935dcd9ce0add9ea0b558e8a87befe01c1a301e6020aeb0876363"
-dependencies = [
- "cfg-if 0.1.10",
 ]
 
 [[package]]

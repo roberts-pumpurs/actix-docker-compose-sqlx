@@ -2,7 +2,7 @@ use serde::Deserialize;
 use serde::Serialize;
 use std::borrow::Cow;
 
-use actix_web::{http::StatusCode, Error, HttpResponse};
+use actix_web::{http::StatusCode, HttpResponse};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct ApiResult<T = ()> {

@@ -4,11 +4,9 @@ version = "0.1.0"
 authors = ["Roberts Ivanovs <robertsivanovs1999@gmail.com>"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-
 [dependencies]
 actix-web = "3.3"
+actix-rt = "1.1.1"
 sqlx = { version = "0.4.2", features = [
     "runtime-tokio-rustls",
     "mysql",
@@ -24,7 +22,9 @@ dotenv = "0.15.0"
 env_logger = "0.8.2"
 log = "0.4.13"
 anyhow = "1.0"
-listenfd = "0.3.3"
-chrono = "0.4.19"
 async-trait = "0.1.42"
 thiserror = "1.0"
+serde-aux = "2.1.1"
+
+[dev-dependencies]
+futures = "0.3.12"

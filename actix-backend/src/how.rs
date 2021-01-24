@@ -1,3 +1,5 @@
+use std::io;
+
 use actix_web::{ResponseError};
 use sqlx::Error as SqlxError;
 
@@ -7,6 +9,8 @@ use crate::api::ApiResult;
 pub enum Error {
     #[error("Sqlx error: {0}")]
     Sqlx(#[from] SqlxError),
+    #[error("IO error: {0}")]
+    Startup(#[from] io::Error),
 }
 
 impl ResponseError for Error {

@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use sqlx::Done;
 use sqlx::{FromRow};
 
 use crate::state::AppState;
